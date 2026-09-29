@@ -19,7 +19,11 @@ public class NetworkThread implements Runnable {
             while (true) {
                 ByteBuffer channel = ByteBuffer.allocateDirect(1024);
                 //write the message to the ByteBuffer
-                client.read(channel);
+                int read = client.read(channel);
+                if(read == -1){
+                    client.close();
+                    break;
+                }
                 //change to read mode
                 channel.flip();
                 //get all the message from bytebuffer
